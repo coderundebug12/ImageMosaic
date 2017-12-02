@@ -1,0 +1,36 @@
+The setup for the server assumes familiarity with Linux.
+A Vagrantfile has been provided for you that takes care of setting up all the dependencies.
+
+To run the server, execute `node server.js` in a terminal from the root of the project folder.
+
+
+For manual setup
+
+
+Linux (Ubuntu 14)
+
+1. Setup git
+
+```
+sudo apt-get install -y git-core
+```
+
+2. Setup nodejs (atleast v7)
+
+3. Set up `graphicsmagick` and `imagemagick` packages
+
+```
+sudo add-apt-repository ppa:rwky/graphicsmagick
+sudo apt-get update
+sudo apt-get install graphicsmagick imagemagick -y
+```
+
+
+For mac
+
+brew install imagemagick
+brew install graphicsmagick
+brew install npm
+npm install gm
+
+
