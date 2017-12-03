@@ -1,3 +1,26 @@
+function Queue() {
+    var data = [];
+
+    this.isEmpty = function() {
+        return (data.length == 0);
+    };
+
+    this.enqueue = function(obj) {
+        data.push(obj);
+    };
+
+    this.dequeue = function() {
+        return data.shift();
+    };
+
+    this.peek = function() {
+        return data[0];
+    };
+
+    this.clear = function() {
+        data = [];
+    };
+}
 window.onload = function () {
     var worker = new Worker('js/webworker.js')
     var canvas = document.getElementById("myCanvas");
@@ -11,8 +34,7 @@ window.onload = function () {
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    //console.log(canvas.width,canvas.height)
-
+    
     //Send Tile Info TO Worker for Calculating the average
     for (var row = 0; row <= canvas.width - 80; row += 80) {
         for (var col = 0; col <= canvas.width - 80; col += 80) {
