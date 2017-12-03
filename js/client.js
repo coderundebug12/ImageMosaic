@@ -11,13 +11,15 @@ window.onload = function () {
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    x = document.getElementById("x");
-    for (var row = 0; row < canvas.height;row += 8) {
-        for (var col = 0; col < canvas.width; col += 8) {
-            //console.log(ctx.getImageData(row, col, 8, 8).data)
+    //console.log(canvas.width,canvas.height)
+
+    //Send Tile Info TO Worker for Calculating the average
+    for (var row = 0; row <= canvas.width - 80; row += 80) {
+        for (var col = 0; col <= canvas.width - 80; col += 80) {
+            //tctx.putImageData(ctx.getImageData(row, col, 80, 80), 0, 0)
             worker.postMessage({
                 type: "getTile",
-                payload: ctx.getImageData(row, col, 8, 8),
+                payload: ctx.getImageData(row, col, 80, 80),
                 cordinates: {
                     x: row,
                     y: col
@@ -25,13 +27,16 @@ window.onload = function () {
             });
         }
     }
-    var tempimg = new Image(8,8);
-    
+    var tempimg = new Image();
     worker.onmessage = function (event) {
-        tempimg.src = event.data.iData;
-        tempimg.onload = function(){
-            tctx.drawImage(tempimg,0,0,8,8)
-            ctx.putImageData(tctx.getImageData(0,0,7,7),parseInt(event.data.cordinates.x),parseInt(event.data.cordinates.y),0,0,7,7)
+        tempimg.src = event.data.payload;
+        setTimeout(()=>{
+            tctx.drawImage(tempimg,0,0)
+            for(var row = 0; row < 400 ; row +=16){
+                for(var col = 0; col < 400 ; col +=16){
+                  ctx.putImageData(tctx.getImageData(0,0,16,16),row,col)
+            }
         }
-    }
+        },500)
+   }
 }
