@@ -1,4 +1,3 @@
-var clamped = undefined;
 self.onmessage = function (e) {
     switch (e.data.type) {
         case "getTile":
