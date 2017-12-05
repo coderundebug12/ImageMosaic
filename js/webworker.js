@@ -1,7 +1,9 @@
+//Executed On Message Recieve
 self.onmessage = function (e) {
+	//Geting Actions and Performing Function
     switch (e.data.type) {
         case "getTile":
-            getTile(calcAvg(e.data.payload),e.data.cordinates);
+            fetchTile(calculateAverageColor(e.data.payload),e.data.cordinates);
             break;
         default:
             console.log("Default")
@@ -9,7 +11,7 @@ self.onmessage = function (e) {
     }
 }
 
-self.calcAvg = function (data) {
+self.calculateAverageColor = function (data) {
     var r = 0,
         g = 0,
         b = 0;
@@ -24,10 +26,12 @@ self.calcAvg = function (data) {
     return r + g + b + "ff";
 }
 
-self.getTile = function (hexcolor,cordinates) {
+//Fetching Tile from Server Using Fetch API
+self.fetchTile = function (hexcolor,cordinates) {
     fetch('http://localhost:3000/color/' + hexcolor)
         .then(function (response) {
             response.blob().then(function (data) {
+				//Getting Image As Blob and Converting it to image url.
                 postMessage({type:'ImageData',payload:URL.createObjectURL(data),cordinates:cordinates});  
             });
         })
