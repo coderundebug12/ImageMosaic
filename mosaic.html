@@ -1,15 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Mosaic</title>
+    <title>Mosaic</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        #dropZone {
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            background: #FAFAFA;
+        }
+        #dropZone:hover {
+            border: 1px dashed #E0E0E0;
+        }
+        #wrapper {
+            background: #F5F5F5;
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            justify-items: center;
+            flex-direction: column;
+        }
+        .btn {
+            margin-top: 10px;
+            background: #03A9F4;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            outline: none;
+            font-family: sans-serif;
+        }
+        .btn:hover {
+            background-color: #039BE5;
+        }
+        #fileupload {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-<!-- Edit me. -->
-<img id="scream" src="js/canvas.jpg" alt="The Scream">
-<canvas id="myCanvas"></canvas>
-<canvas id="tc" style="border:1px solid;" width="80px" height="80px"></canvas>
-<div id="target"></div>
-<script type="text/javascript" src="js/mosaic.js"></script>
-<script type="text/javascript" src="js/client.js"></script>
+    <!-- Edit me. -->
+    <div id="wrapper">
+        <canvas id="tc" style="border:1px solid;" width="80px" height="80px"></canvas>
+        <canvas id="dropZone" ondrop="onDrop(event);" ondragover="dragOver(event);" width="300px" height="300px"></canvas>
+        <div>
+            <button type="button" class="btn" onclick="makeImageMosiac()">Make Mosaic</button>
+            <label for="fileupload" class="btn">Upload</label>
+            <input id="fileupload" type="file" onchange="handleFiles(this.files)">
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/mosaic.js"></script>
+    <script type="text/javascript" src="js/client.js"></script>
 </body>
+
 </html>
