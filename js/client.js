@@ -5,7 +5,6 @@
     var ctx = canvas.getContext("2d");
     ctx.font = "20px Georgia";
     ctx.fillText("Drop Your File Here", (canvas.width - 240), (canvas.height / 2));
-
     function dragOver(event) {
         event.stopPropagation();
         event.preventDefault();
@@ -22,11 +21,11 @@
 
     //Sending Image Data to Worker For Calculating Average And Getting Tile From Server
     function makeImageMosiac() {
-        for (var row = 0; row <= canvas.height; row += 16) {
-            for (var col = 0; col <= canvas.width; col += 16) {
+        for (var row = 0; row <= canvas.height; row += TILE_HEIGHT) {
+            for (var col = 0; col <= canvas.width; col += TILE_WIDTH) {
                 worker.postMessage({
                     type: "getTile",
-                    payload: ctx.getImageData(col, row, 16, 16),
+                    payload: ctx.getImageData(col, row, TILE_WIDTH, TILE_HEIGHT),
                     cordinates: {
                         x: col,
                         y: row
@@ -49,12 +48,13 @@
         tempimg.src = data.payload;
         tempimg.onload = function () {
         tctx.drawImage(tempimg, 0, 0);
-        ctx.putImageData(tctx.getImageData(0, 0, 16, 16), cordinates.x, cordinates.y)
+        ctx.putImageData(tctx.getImageData(0, 0, TILE_HEIGHT, TILE_WIDTH), cordinates.x, cordinates.y)
         }
     }
 
     function handleFiles(files) {
-        validateFileandDraw(files[0])
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        validateFileandDraw(files[0]);
     }
 
     function validateFileandDraw(file) {
