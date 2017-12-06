@@ -17,8 +17,7 @@
         event.preventDefault();
         event.target.style.opacity = 1;
         var file = event.dataTransfer.files[0];
-		validateFileandDraw(file);
-        
+        validateFileandDraw(file);
     }
 
     //Sending Image Data to Worker For Calculating Average And Getting Tile From Server
@@ -39,7 +38,7 @@
     }
 
     // Get Tile As A Blob Url and Draw It to Temp Canvas For Copying it.
-    worker.onmessage = function(event) {
+    worker.onmessage = function (event) {
         draw(event.data);
     }
 
@@ -48,31 +47,28 @@
         var tempimg = new Image();
         var cordinates = data.cordinates;
         tempimg.src = data.payload;
-        tempimg.onload = function() {
-            tctx.drawImage(tempimg, 0, 0);
-            for (var row = 0; row <= canvas.width; row += 16) {
-                for (var col = 0; col <= canvas.height; col += 16) {
-                    ctx.putImageData(tctx.getImageData(0, 0, 16, 16), cordinates.x, cordinates.y)
-                }
-            }
+        tempimg.onload = function () {
+        tctx.drawImage(tempimg, 0, 0);
+        ctx.putImageData(tctx.getImageData(0, 0, 16, 16), cordinates.x, cordinates.y)
         }
     }
-	
-	function handleFiles(files){
-		validateFileandDraw(files[0])
-	}
-	
-	function validateFileandDraw(file){
-		//Validating Image Files
+
+    function handleFiles(files) {
+        validateFileandDraw(files[0])
+    }
+
+    function validateFileandDraw(file) {
+        //Validating Image Files
+        if(file === undefined) return;
         if (file.type.indexOf('image') == -1) {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             ctx.fillText("Please Use A Image File", (canvas.width - 250), (canvas.height / 2));
             return;
         }
         //Drawing Dropped Image On Canvas
-        createImageBitmap(file).then(function(response) {
+        createImageBitmap(file).then(function (response) {
             canvas.width = response.width;
             canvas.height = response.height;
             ctx.drawImage(response, 0, 0)
         });
-	}
+    }
