@@ -1,5 +1,3 @@
-//Cache to store image url
-self.cache = {};
 //Executed On Message Recieve
 self.onmessage = function (e) {
 	//Geting Actions and Performing Function
@@ -34,15 +32,13 @@ function rgbToHex(r, g, b) {
 
 //Fetching Tile from Server Using Fetch API
 self.fetchTile = function (hexcolor,cordinates) {
-    //Save Some Network Request
-    if(self.cache.hasOwnProperty(hexcolor)) return self.cache[hexcolor]
     fetch('http://localhost:3000/color/' + hexcolor)
         .then(function (response) {
             response.blob().then(function (data) {
                 //Updating The Cache To Re Use tiles
-                cache[hexcolor] = URL.createObjectURL(data);
-                //Getting Image As Blob and Converting it to image url.
-                postMessage({type:'ImageData',payload:URL.createObjectURL(data),cordinates:cordinates});  
+                createImageBitmap(data).then(function(imageBitmap){
+                    postMessage({type:'ImageData',payload:imageBitmap,cordinates:cordinates});
+                })  
             });
         })
         .catch(function (err) {
